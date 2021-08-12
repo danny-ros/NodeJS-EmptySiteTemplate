@@ -32,7 +32,7 @@ pipeline {
 
     stage('Package Code') {
       steps {
-        sh 'tar -czvf node.ta.gz *'
+        sh 'tar -czvf node.tar.gz *'
       }
     }
 
@@ -44,13 +44,14 @@ pipeline {
             cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true)
           }
         }
-      } 
+
+      }
     }
 
-        stage('Slack Send') {
-          steps {
-            sleep 1
-            slackSend channel: 'danny-ros', color: '#3EA652', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} - Started By ${env.BUILD_USER} (${env.BUILD_URL})"
+    stage('Slack Send') {
+      steps {
+        sleep 1
+        slackSend(channel: 'danny-ros', color: '#3EA652', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} - Started By ${env.BUILD_USER} (${env.BUILD_URL})")
       }
     }
 
