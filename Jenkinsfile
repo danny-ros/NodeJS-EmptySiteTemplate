@@ -30,5 +30,29 @@ fi'''
       }
     }
 
+    stage('Package Code') {
+      parallel {
+        stage('Package Code') {
+          steps {
+            sh 'tar -czvf node.ta.gz *'
+          }
+        }
+
+        stage('Notify Slack') {
+          steps {
+            slackSend(color: '#3EA652', attachments: 'BlueOcen', blocks: 'sssss')
+          }
+        }
+
+      }
+    }
+
+    stage('Publish') {
+      steps {
+        archiveArtifacts 'node.tar.jz'
+        cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true)
+      }
+    }
+
   }
 }
