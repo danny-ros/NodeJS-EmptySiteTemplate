@@ -36,10 +36,19 @@ fi'''
       }
     }
 
-    stage('Publish') {
-      steps {
-        archiveArtifacts 'node.tar.jz'
-        cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true)
+    stage('Publish the Archive') {
+      parallel {
+        stage('Publish the Archive') {
+          steps {
+            archiveArtifacts 'node.tar.gz'
+            cleanWs(cleanWhenAborted: true, cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenSuccess: true, cleanWhenUnstable: true)
+          }
+        }
+
+        stage('Slack Send') {
+          steps {
+            sleep 1
+            slackSend channel: 'danny-ros', color: '#3EA652', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} - Started By ${env.BUILD_USER} (${env.BUILD_URL})"
       }
     }
 
