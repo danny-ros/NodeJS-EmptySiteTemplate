@@ -45,12 +45,17 @@ pipeline {
           }
         }
 
+        stage('Slack') {
+          steps {
+            slackSend(message: '"${env.JOB_NAME} #${env.BUILD_NUMBER} - Started By ${env.BUILD_USER} (${env.BUILD_URL})"', color: '#3EA652', channel: 'danny-ros')
+          }
+        }
+
       }
     }
 
     stage('Slack Send') {
       steps {
-        sleep 1
         slackSend(channel: 'danny-ros', color: '#3EA652', message: "${env.JOB_NAME} #${env.BUILD_NUMBER} - Started By ${env.BUILD_USER} (${env.BUILD_URL})")
       }
     }
