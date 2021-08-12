@@ -31,19 +31,8 @@ fi'''
     }
 
     stage('Package Code') {
-      parallel {
-        stage('Package Code') {
-          steps {
-            sh 'tar -czvf node.ta.gz *'
-          }
-        }
-
-        stage('Notify Slack') {
-          steps {
-            slackSend (channel: "#danny-dev", color: "danger", message: "Test message", attachments: attachments)
-          }
-        }
-
+      steps {
+        sh 'tar -czvf node.ta.gz *'
       }
     }
 
