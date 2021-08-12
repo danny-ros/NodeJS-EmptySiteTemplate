@@ -40,7 +40,7 @@ fi'''
 
         stage('Notify Slack') {
           steps {
-            slackSend(color: '#3EA652', attachments: 'BlueOcen', blocks: 'sssss')
+            slackSend (channel: "#danny-dev", color: "danger", message: "Test message", attachments: attachments)
           }
         }
 
